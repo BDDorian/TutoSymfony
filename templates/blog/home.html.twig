@@ -1,0 +1,12 @@
+{% extends  'base.html.twig' %}
+
+{% block body %}
+<h1> {{ title }} </h1>
+
+{% if age > 18 %}
+    <p> Tu es majeur </p>
+{% endif %}
+
+<p> Contenu de la page home </p>
+
+{% endblock %}
