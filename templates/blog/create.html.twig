@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{#Ajout du thème de formulaire présent dans le fichier twig.yaml. précisez le formulaire ciblé soit formArticle et non form.#}
+{% form_theme formArticle 'bootstrap_4_layout.html.twig' %}
+
+    {% block body %}
+
+    <h1> Créer un nouvel article </h1>
+    {# form_start => fonction twig pour marquer l'ouverture de mon formulaire#}
+    {{ form_start(formArticle) }}
+    {# form_raw => fonction pour afficher chaque ligne de mon formulaire plus des attributs comme les placeholder #}
+    {{ form_row(formArticle.title, {'attr' : {'placeholder': "Titre de l'article"}}) }}
+    {{ form_row(formArticle.category) }}
+    {{ form_row(formArticle.content, {'attr' : {'placeholder': "Contenu de l'article"}}) }}
+    {{ form_row(formArticle.image, {'attr' : {'placeholder': "Contenu de votre image"}}) }}
+   
+    {# Inclusion du bouton de validation du formulaire #}
+
+    <button type="submit" class="btn btn-success">
+        {% if editMode %}
+            Enregistrer les modifications
+        {% else %}
+            Ajouter l'article
+        {% endif %}
+        </button>        
+    {{ form_end(formArticle) }}
+    {% endblock %}
