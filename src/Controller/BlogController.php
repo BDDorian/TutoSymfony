@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Article;
 //Intégration de la classe ArticleType pour le formulaire
 use App\Form\ArticleType;
+use App\Form\CommentType;
+use App\Entity\Comment;
 
 class BlogController extends Controller
 {
@@ -96,14 +98,31 @@ class BlogController extends Controller
     /**
      * @Route("/blog/{id}", name="blog_show")
      */
-    public function show($id)
+    public function show(Article $article, Request $request, ObjectManager $manager)
     {
+
+        $comment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $comment->setCreatedAt( new \DateTime())
+                    ->setArticle($article);
+            $manager->persist($comment);
+            $manager->flush();
+
+            return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
+        }
+
         $repo =$this->getDoctrine()->getRepository(Article::class);
         //find($id) pour récupérer les articles avec le bon id.
-        $article = $repo->find($id);
+        //$article = $repo->find($id);
 
         return $this->render('blog/show.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'commentForm' => $form->createView()
         ]);
     }
 

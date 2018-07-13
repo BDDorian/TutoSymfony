@@ -46,4 +46,13 @@ class SecurityController extends Controller
     public function login(){
         return $this->render('security/login.html.twig');
     }
+
+
+    //Fonction pour se déconnecter du blog
+    /**
+     * @Route("/deconnexion", name="security_logout")
+     */
+    public function logout(){
+        return $this->render('security/logout.html.twig');
+    }
 }
